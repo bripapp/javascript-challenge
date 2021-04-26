@@ -39,3 +39,41 @@ let filterButton = d3.select('#filter-btn');
 // get reference to reset button using id property
 let resetButton = d3.select('#reset-btn');
 
+// create filtering function
+function filterData(){
+
+    // prevent page from refreshing
+    d3.event.preventDefault();
+
+    // grab given input for all fields
+    let valueDate = inputDate.property('value');
+    let valueCity = inputCity.property('value');
+    let valueState = inputState.property('value');
+    let valueCountry = inputCountry.property('value');
+    let valueShape = inputShape.property('value');
+
+    // apply filtering conditions for given data and assign to variable
+    let filteredData = tableData.filter(function(recorded){
+        return((recorded.datetime === valueDate || valueDate == '') &&
+                (recorded.city === valueCity || valueCity == '') &&
+                (recorded.state === valueState || valueState == '') &&
+                (recorded.country === valueCountry || valueCountry == '') &&
+                (recorded.shape === valueShape || valueShape == '')
+            )
+    })
+
+    // print filtered data to console
+    console.log(filteredData)
+
+    // clear table and append filtered data
+    tbody.text('')
+    filteredData.forEach(aliens => {
+        let row = tbody.append('tr')
+        columns.forEach(column => {
+            if(column == 'city' || column == 'state' || column == 'country'){
+                row.append('td').text(aliens[column].toUpperCase())
+            }
+            else row.append('td').text(aliens[column])
+        })
+    })
+}
