@@ -1,10 +1,24 @@
 // from data.js
-var tableData = data;
-console.log(tableData);
+let tableData = data;
 
-// YOUR CODE HERE!
 // reference table body
-var tbody = d3.select('tbody');
+let tbody = d3.select('tbody');
 
 // print table data to console
 console.log(data);
+
+// create array with data's column names
+let columns = ["datetime","city","state","country","shape","durationMinutes","comments"]
+
+// loop through data table and add each row to table on webpage
+function loadData(){
+    tableData.forEach(aliens => {
+        let row = tbody.append('tr')
+        columns.forEach(column => {
+            if(column == 'city' || column == 'state' || column == 'country'){
+                row.append('td').text(aliens[column].toUpperCase())
+            }
+            else row.append('td').text(aliens[column])
+        })
+    })
+}
