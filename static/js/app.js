@@ -22,3 +22,6 @@ function loadData(){
         })
     })
 }
+
+// call the function to load the data 
+loadData()
