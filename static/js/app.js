@@ -1,7 +1,7 @@
 // from data.js
 let tableData = data;
 
-// reference table body
+// get reference table body
 let tbody = d3.select('tbody');
 
 // print table data to console
@@ -23,5 +23,14 @@ function loadData(){
     })
 }
 
-// call the function to load the data 
+// call the function to load data 
 loadData()
+
+// get reference to input elements using id property
+let inputDate = d3.select('#datetime');
+let inputCity = d3.select('#city');
+let inputState = d3.select('#state');
+let inputCountry = d3.select('#country');
+let inputShape = d3.select('#shape');
+
+// get reference to filter button using id property
