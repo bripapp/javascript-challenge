@@ -34,3 +34,8 @@ let inputCountry = d3.select('#country');
 let inputShape = d3.select('#shape');
 
 // get reference to filter button using id property
+let filterButton = d3.select('#filter-btn');
+
+// get reference to reset button using id property
+let resetButton = d3.select('#reset-btn');
+
