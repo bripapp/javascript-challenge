@@ -8,7 +8,7 @@ var $resetBtn = document.querySelector("#reset");
 $searchBtn.addEventListener("click", handleSearchButtonClick);
 
 // Add an event listener to the resetButton, call handleResetButtonClick when clicked
-// $resetBtn.addEventListener("click", handleResetButtonClick);
+$resetBtn.addEventListener("click", handleResetButtonClick);
 
 // Create a copy of the data
 var tableData = data;
@@ -49,9 +49,9 @@ function handleSearchButtonClick() {
 }
 
 // Clear all the fields
-// function handleResetButtonClick(){
-//   renderTable();
-// }
+function handleResetButtonClick() {
+  renderTable();
+}
 
 // Render the table for the first time on page load
 renderTable();
