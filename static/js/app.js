@@ -1,79 +1,78 @@
-// from data.js
+// Starter Code
 let tableData = data;
 
-// get reference table body
-let tbody = d3.select('tbody');
+// Creating References
+let $tbody = d3.select("tbody");
+let button = d3.select("#filter-btn");
+let inputFieldDate = d3.select("#datetime");
+let inputFieldCity = d3.select("#city");
 
-// print table data to console
-console.log(data);
 
-// create array with data's column names
-let columns = ["datetime","city","state","country","shape","durationMinutes","comments"]
+let columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"]
+// console.log(columns);
 
-// loop through data table and add each row to table on webpage
-function loadData(){
-    tableData.forEach(aliens => {
-        let row = tbody.append('tr')
-        columns.forEach(column => {
-            if(column == 'city' || column == 'state' || column == 'country'){
-                row.append('td').text(aliens[column].toUpperCase())
-            }
-            else row.append('td').text(aliens[column])
-        })
-    })
+
+// Inputing the data into the HTML
+let addData = (dataInput) => {
+    dataInput.forEach(ufoSightings => {
+        let row = $tbody.append("tr");
+        columns.forEach(column => row.append("td").text(ufoSightings[column])
+        )
+    });
 }
+addData(tableData);
 
-// call the function to load data 
-loadData()
 
-// get reference to input elements using id property
-let inputDate = d3.select('#datetime');
-let inputCity = d3.select('#city');
-let inputState = d3.select('#state');
-let inputCountry = d3.select('#country');
-let inputShape = d3.select('#shape');
-
-// get reference to filter button using id property
-let filterButton = d3.select('#filter-btn');
-
-// get reference to reset button using id property
-let resetButton = d3.select('#reset-btn');
-
-// create filtering function
-function filterData(){
-
-    // prevent page from refreshing
+// Creating an Event Listener for the Button
+// Setting up the Filter Button for Date and City
+button.on("click", () => {
     d3.event.preventDefault();
+    
+    let inputDate = inputDate.property("value").trim();
+    let inputCity = inputCity.property("value").toUpperCase().trim();
+    let inputState = inputState.property("value").toUpperCase().trim();
+    let inputCountry = inputCountry.property("value").toUpperCase().trim();
+    let inputShape = inputShape.property("value").toUpperCase().trim();
+    
+    let filterDate = tableData.filter(tableData => tableData.datetime === inputDate);
+    let filterCity = tableData.filter(tableData => tableData.city === inputCity);
+    let filterState = tableData.filter(tableData => tableData.state === inputState);
+    let filterCountry = tableData.filter(tableData => tableData.country === inputCountry);
+    let filterShape = tableData.filter(tableData => tableData.shape === inputShape);
 
-    // grab given input for all fields
-    let valueDate = inputDate.property('value');
-    let valueCity = inputCity.property('value');
-    let valueState = inputState.property('value');
-    let valueCountry = inputCountry.property('value');
-    let valueShape = inputShape.property('value');
+    let filterCombinedData = tableData.filter(tableData => tableData.datetime === inputDate && tableData.city === inputCity && tableData.state === inputState && tableData.country === inputCountry && tableData.shape === inputShape);
+    $tbody.html("");
 
-    // apply filtering conditions for given data and assign to variable
-    let filteredData = tableData.filter(function(recorded){
-        return((recorded.datetime === valueDate || valueDate == '') &&
-                (recorded.city === valueCity || valueCity == '') &&
-                (recorded.state === valueState || valueState == '') &&
-                (recorded.country === valueCountry || valueCountry == '') &&
-                (recorded.shape === valueShape || valueShape == '')
-            )
-    })
+    let response = {
+        filterDate, filterCity, filterCombinedData
+    }
 
-    // print filtered data to console
-    console.log(filteredData)
+    // let response = {
+    //     filterDate, filterCity, filterCombinedData, filterState, filterCountry, filterShape
+    // }
 
-    // clear table and append filtered data
-    tbody.text('')
-    filteredData.forEach(aliens => {
-        let row = tbody.append('tr')
-        columns.forEach(column => {
-            if(column == 'city' || column == 'state' || column == 'country'){
-                row.append('td').text(aliens[column].toUpperCase())
-            }
-            else row.append('td').text(aliens[column])
-        })
-    })
-}
+    // if(response.filterDate.length !== 0) {
+    //     addData(filterDate);
+    // }
+
+    // Top if only works for filtering the date
+    // Need to accommodate for combining multiple filters, needed to create a new var for it
+    if(response.filterCombinedData.length !== 0) {
+        addData(filterCombinedData);
+    }
+
+    // else if(response.filterCity.length !== 0){
+    //     addData(filterCity);
+    // }
+        else if(response.filterCombinedData.length === 0 && ((response.filterDate.length !== 0 || response.filterCity.length !== 0))) {
+            addData(filterDate) || addData(filterCity);
+        }
+
+        // else if(response.filterCombinedDateState.length === 0 && ((response.filterDate.length !== 0 || response.filterState.length !== 0))) {
+        //     addData(filterDate) || addData(filterState);
+        // }
+
+        else {
+            $tbody.append("tr").append("td").text("No Sightings Here...Move On...");
+        }
+})
